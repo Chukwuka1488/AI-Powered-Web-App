@@ -7,6 +7,11 @@ import {
 import { MessageArraySchema } from "@/lib/validators/message";
 import { NextResponse } from "next/server";
 
+// Define a custom error interface
+interface ApiError extends Error {
+  status?: number;
+}
+
 export async function POST(req: Request) {
   try {
     // Log API key presence (but not the actual key)
@@ -76,10 +81,18 @@ export async function POST(req: Request) {
     console.log("Stream created successfully");
 
     return new Response(stream);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error in message route:", error);
-    return new NextResponse(`Error: ${error.message || "Unknown error"}`, {
-      status: error.status || 500,
-    });
+
+    // Type guard for error handling
+    if (error instanceof Error) {
+      const apiError = error as ApiError;
+      return new NextResponse(apiError.message || "An error occurred", {
+        status: apiError.status || 500,
+      });
+    }
+
+    //  Fallback for unknown error types
+    return new NextResponse("An unknown error occurred", { status: 500 });
   }
 }
