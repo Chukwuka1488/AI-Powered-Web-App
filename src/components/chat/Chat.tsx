@@ -7,29 +7,35 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "../ui/accordion";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 
 const Chat: FC = () => {
   return (
-    <div className="fixed right-8 w-80 bottom-8">
-      <Accordion type="single" collapsible>
-        <AccordionItem value="chat">
-          <AccordionTrigger className="px-6 py-4 hover:no-underline">
-            <ChatHeader />
-          </AccordionTrigger>
+    <Accordion
+      type="single"
+      collapsible
+      className="relative bg-white z-40 shadow"
+    >
+      <AccordionItem value="item-1">
+        <div className="fixed right-8 w-80 bottom-8  bg-slate-200 border border-gray-200 rounded-md overflow:hidden">
+          <div className="w-full h-full flex flex-col">
+            <AccordionTrigger className="px-6 border-b border-zinc-300">
+              <ChatHeader />
+            </AccordionTrigger>
+          </div>
           <AccordionContent>
             <div className="flex flex-col h-80">
-              <div className="flex-1 px-6 py-4">Messages will appear here</div>
+              {/* <div className="flex-1 px-6 py-4"></div> */}
               <div className="px-6 pb-4">
                 <ChatInput />
               </div>
             </div>
           </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
+        </div>
+      </AccordionItem>
+    </Accordion>
   );
 };
 
